@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BST - Insertion, Searching, Deletion  </title>
+</head>
+<body>
+    
+</body>
+<script>
+    class Node{
+        constructor(data){
+            this.data = data;
+            this.left = null;
+            this.right = null;
+        }
+    }
+
+    class Binary{
+        createBinary(root,key){
+            var new_node = new Node(key);
+            new_node.left = null;
+            new_node.right = null;
+            return new_node;
+        }
+
+        InsertBinary(root,key){
+            if(root==null){
+                return this.createBinary(root,key);
+            }
+            else if(root.data > key){
+                root.left = this.InsertBinary(root.left,key)
+            }
+            else{
+                root.right = this.InsertBinary(root.right,key)
+            }
+            return root;
+        }
+
+        successor(root){
+            root = root.right;
+            while(root.left!=null){
+                root = root.left;
+            }
+            return root;
+        }
+
+        predessor(root){
+            root = root.left;
+            while(root.right!=null){
+                root = root.right;
+            }
+            return root;
+        }
+
+        deleteTree(root,value){
+            if(root==null){
+                return root;
+            }
+            if(root.data > value){
+                root.left = this.deleteTree(root.left,value);
+            }
+            else if(root.data < value){
+                root.right = this.deleteTree(root.right,value);
+            }
+            else{
+                if (root.left==null && root.right == null){
+                    return null;
+                }
+                else if(root.left!=null){
+                    var pre = this.predessor(root)
+                    root.data = pre.data;
+                    root.left = this.deleteTree(root.left, root.data)
+                }
+                else{
+                    var pre = this.successor(root)
+                    root.data = pre.data;
+                    root.right = this.deleteTree(root.right, root.data)
+                }
+            }
+            return root;
+        }
+
+        searching(root,value){
+            if(root==null){
+                return null;
+            }
+            if(root.data == value){
+                return root;
+            }
+            else if(root.data > key){
+                return searching(root.left,value)
+            }
+            else{
+                return searching(root.right,value)
+            }
+        }
+
+        display(root){
+            if(root==null){
+                return null;
+            }
+            this.display(root.left)
+            console.log(root.data)
+            this.display(root.right)
+        }
+    }
+    var tree = new Binary();
+    var root = null;
+    root = tree.InsertBinary(root,12)
+    root = tree.InsertBinary(root,2);
+    root = tree.InsertBinary(root,45);
+    root = tree.InsertBinary(root,89);
+    root = tree.InsertBinary(root,65);
+    
+    tree.display(root);
+
+    console.log("After deleting 45")
+    root = tree.deleteTree(root, 45)
+    tree.display(root) 
+
+    console.log("After searching 89")
+    n = tree.searching(root, 89)
+    if (n != null)
+        console.log(n.data +" Found")
+    else
+        console.log("Not present ")
+
+
+
+
+</script>
+</html>
